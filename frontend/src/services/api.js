@@ -3,7 +3,7 @@
  * Connects React frontend with Flask backend endpoints.
  */
 
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 
 async function handleResponse(response) {
   const contentType = response.headers.get('content-type');
