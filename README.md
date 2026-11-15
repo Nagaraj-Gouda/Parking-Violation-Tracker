@@ -1,5 +1,10 @@
 # 🚗 Parking Violation Tracker – Project P14
 
+## 🌐 Live Demo
+
+**Live Website:** https://parking-violation-tracker.vercel.app
+
+
 A full-stack **Parking Violation Reporting and Enforcement Management System** integrating **Automata Theory, Computer Networks, and Full Stack Web Development**.
 
 The application validates vehicle registration numbers using **Deterministic Finite Automata (DFA) and Regular Expressions**, assigns enforcement teams through **prefix-based routing and priority queueing**, and provides interactive dashboards for managing and analysing parking violations.
