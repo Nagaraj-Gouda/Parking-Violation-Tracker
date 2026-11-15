@@ -1,58 +1,189 @@
-# PARKING VIOLATION TRACKER (PROJECT P14)
+# 🚗 Parking Violation Tracker – Project P14
 
-A professional, responsive, full-stack Parking Violation Tracker web application integrating **Automata Theory (DFA + Regular Expressions)** for vehicle registration validation, **Computer Networks (Prefix-Based Routing & Queueing)** for enforcement dispatch, **Flask REST APIs with SQLite persistence**, and a **React + Vite dashboard with Chart.js analytics**.
+A full-stack **Parking Violation Reporting and Enforcement Management System** integrating **Automata Theory, Computer Networks, and Full Stack Web Development**.
 
-Designed and implemented to satisfy **Part 3 (Frontend & Web Application Development)** and **Part 4 (Testing & Integration)** of the Academic P14 Assignment.
+The application validates vehicle registration numbers using **Deterministic Finite Automata (DFA) and Regular Expressions**, assigns enforcement teams through **prefix-based routing and priority queueing**, and provides interactive dashboards for managing and analysing parking violations.
 
----
-
-## 1. Key Features & Academic Highlights
-
-### A. Part A – Automata Theory Integration (`validation.py`)
-* **Vehicle Registration DFA:** Implements a formal Deterministic Finite Automaton $M = (Q, \Sigma, \delta, q_0, F)$ that validates Indian registration plates character-by-character.
-  * States: $q_0$ (Start) through $q_{10}$ (Accept) and $q_{dead}$ (Trap).
-  * Formal Alphabet: $\Sigma = \{A\text{-}Z, 0\text{-}9\}$.
-  * Pattern: `[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}`.
-* **Regular Expression Engine:** Evaluates inputs using Python's `re.fullmatch()`.
-* **Automata Agreement Verification:** Automatically compares DFA and Regex outcomes. Submissions are rejected if either engine fails or if they disagree.
-* **Violation Code Validation:** Strict verification of syntax `PV[0-9]{2}`.
-* **Strict Malformed Input Handling:** Rejects lowercase letters, empty strings, invalid lengths, and unmapped violation codes without silent conversion.
-
-### B. Part B – Computer Networks Integration (`routing.py`)
-* **6-Zone Prefix Routing Table:**
-  | Prefix | Enforcement Zone | Assigned Team | Coverage Area |
-  | :--- | :--- | :--- | :--- |
-  | **KA01** | Zone 1 | Team A | Bangalore Central - MG Road, Brigade Rd, CBD |
-  | **KA02** | Zone 2 | Team B | Bangalore West - Rajajinagar, Malleshwaram |
-  | **KA03** | Zone 3 | Team C | Bangalore East - Indiranagar, Marathahalli |
-  | **KA04** | Zone 4 | Team D | Bangalore North - Hebbal, Yelahanka |
-  | **KA05** | Zone 5 | Team E | Bangalore South - Jayanagar, JP Nagar |
-  | **KA06** | Zone 6 | Team F | Tech Corridor - Whitefield, Bellandur |
-* **Priority Dispatch Hierarchy:**
-  1. `Emergency / Critical`
-  2. `High`
-  3. `Medium`
-  4. `Low`
-* **Automated Handler Failover:** Evaluates Primary handler first. If offline or at daily capacity, automatically re-routes to Backup handler.
-* **Capacity Throttling:** Enforces daily workload limits per officer directly calculated from active database records.
-* **Waiting Queue:** Buffers reports when all handlers in a zone are at maximum capacity, auto-dispatching the highest-priority reports once capacity frees up.
-* **Central Correction Queue:** Isolates unrecognized or out-of-state vehicle prefixes (e.g. `DL`, `MH`, `KA07`) for manual administrative dispatch.
-* **Duplicate Prevention:** Prevents re-assignment of active incidents.
-
-### C. Frontend Web Application (React + Vite + Bootstrap 5)
-* **Overview Dashboard (`/`):** Summary KPI cards, live resolution rate, Chart.js zone bar chart, category doughnut chart, daily trend line chart, and recent violations table.
-* **Report Submission (`/submit`):** Form with live DFA character-by-character trace inspector, real-time regex feedback, category auto-classification, and instant routing preview.
-* **User Dashboard (`/reports`):** Search by vehicle, report ID, or location; filter by status, zone, category, and priority.
-* **Handler Dashboard (`/handlers`):** Officer roster with daily load capacity bars (e.g., 3/5), on-duty/off-duty switches, and action buttons to accept assignments, mark in progress, or resolve violations.
-* **Routing Management (`/routing`):** Visual 6-zone routing table, real-time Waiting Queue, and Central Correction Queue with modal reassignment controls.
-* **Analytics Dashboard (`/analytics`):** Interactive Chart.js charts backed directly by SQLite queries.
+**GitHub Repository:** [Parking-Violation-Tracker](https://github.com/Nagaraj-Gouda/Parking-Violation-Tracker)
 
 ---
 
-## 2. Project Directory Structure
+## 📌 1. Project Overview
 
+Parking Violation Tracker is designed to simplify parking violation reporting, validation, assignment, monitoring, and enforcement.
+
+### Main Objectives
+
+- Vehicle registration validation using DFA and Regular Expressions.
+- Automatic violation classification.
+- Zone-based enforcement team assignment.
+- Priority-based dispatch and waiting queue management.
+- Handler availability and workload management.
+- Violation tracking and status updates.
+- Interactive analytics and reporting dashboards.
+
+### Academic Concepts Integrated
+
+- **Part A:** Automata Theory Integration.
+- **Part B:** Computer Networks Integration.
+- **Part 3:** Frontend and Web Application Development.
+- **Part 4:** Testing and Integration.
+
+---
+
+## 📸 2. Project Screenshots
+
+### 1. Overview Dashboard
+
+![Overview Dashboard](screenshots/overview.png)
+
+### 2. Submit Violation
+
+![Submit Violation](screenshots/submit-violation.png)
+
+### 3. User Dashboard
+
+![User Dashboard](screenshots/user-dashboard.png)
+
+### 4. Handler Dashboard
+
+![Handler Dashboard](screenshots/handler-dashboard.png)
+
+### 5. Routing Management
+
+![Routing Management](screenshots/routing-management.png)
+
+### 6. Analytics Dashboard
+
+![Analytics Dashboard](screenshots/analytics.png)
+
+---
+
+## ✨ 3. Key Features
+
+### A. Automata Theory Integration
+
+Implemented in `backend/validation.py`.
+
+**Vehicle Registration Validation**
+
+- Uses a Deterministic Finite Automaton (DFA).
+- Validates Indian vehicle registration numbers character by character.
+- Uses accepting and dead/trap states.
+- Compares DFA validation results with Python Regular Expression validation.
+
+**Vehicle Registration Pattern**
+
+```regex
+[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}
 ```
+
+**DFA Mathematical Model**
+
+```text
+M = (Q, Σ, δ, q0, F)
+```
+
+Where:
+
+- `Q` – Set of states.
+- `Σ` – Input alphabet.
+- `δ` – Transition function.
+- `q0` – Initial state.
+- `F` – Set of final states.
+
+**Violation Code Validation**
+
+```regex
+PV[0-9]{2}
+```
+
+The application rejects malformed vehicle numbers and invalid violation codes.
+
+### B. Computer Networks Integration
+
+Implemented in `backend/routing.py`.
+
+**Prefix-Based Routing**
+
+The system uses vehicle registration prefixes to determine enforcement zones and assigned teams.
+
+| Prefix | Enforcement Zone | Team | Coverage Area |
+|---|---|---|---|
+| KA01 | Zone 1 | Team A | Bangalore Central |
+| KA02 | Zone 2 | Team B | Bangalore West |
+| KA03 | Zone 3 | Team C | Bangalore East |
+| KA04 | Zone 4 | Team D | Bangalore North |
+| KA05 | Zone 5 | Team E | Bangalore South |
+| KA06 | Zone 6 | Team F | Tech Corridor |
+
+**Priority-Based Dispatch**
+
+Reports are processed according to the following priority:
+
+1. Emergency / Critical
+2. High
+3. Medium
+4. Low
+
+**Additional Routing Features**
+
+- Primary and backup handler assignment.
+- Automatic handler failover.
+- Daily handler workload limits.
+- Waiting queue for reports when handlers are unavailable.
+- Central correction queue for unrecognized vehicle prefixes.
+- Prevention of duplicate active incident assignments.
+
+### C. Frontend Web Application
+
+Developed using React and Vite.
+
+The application contains six main sections:
+
+| Dashboard | Features |
+|---|---|
+| Overview Dashboard | Summary cards, violation statistics, charts and recent reports |
+| Submit Violation | Violation submission, vehicle validation and routing preview |
+| User Dashboard | Search and filter submitted violation reports |
+| Handler Dashboard | Handler availability, assignments and status updates |
+| Routing Management | Zone routing, waiting queue and correction queue |
+| Analytics Dashboard | Interactive charts and database-driven statistics |
+
+---
+
+## 🛠️ 4. Technology Stack
+
+| Category | Technologies |
+|---|---|
+| Frontend | React 18, JavaScript, HTML5, CSS3 |
+| Build Tool | Vite 6 |
+| UI Framework | Bootstrap 5.3, Bootstrap Icons |
+| Routing | React Router DOM 6 |
+| Charts | Chart.js 4, react-chartjs-2 |
+| Backend | Python 3.13, Flask 3.1 |
+| API | Flask REST APIs, Flask-CORS |
+| Database | SQLite3 |
+| Testing | Pytest 8.3.4 |
+| Version Control | Git and GitHub |
+
+---
+
+## 📂 5. Project Directory Structure
+
+```text
 Parking-Violation-Tracker/
+│
+├── backend/
+│   ├── app.py
+│   ├── database.py
+│   ├── validation.py
+│   ├── classification.py
+│   ├── routing.py
+│   ├── requirements.txt
+│   ├── parking_tracker.db
+│   └── tests/
+│       └── test_tracker.py
 │
 ├── frontend/
 │   ├── src/
@@ -64,6 +195,7 @@ Parking-Violation-Tracker/
 │   │   │   ├── StatusBadge.jsx
 │   │   │   ├── LoadingIndicator.jsx
 │   │   │   └── ReportDetailModal.jsx
+│   │   │
 │   │   ├── pages/
 │   │   │   ├── OverviewDashboard.jsx
 │   │   │   ├── SubmitReportPage.jsx
@@ -71,26 +203,26 @@ Parking-Violation-Tracker/
 │   │   │   ├── HandlerDashboard.jsx
 │   │   │   ├── RoutingDashboard.jsx
 │   │   │   └── AnalyticsDashboard.jsx
+│   │   │
 │   │   ├── services/
 │   │   │   └── api.js
-│   │   ├── assets/
+│   │   │
 │   │   ├── App.jsx
 │   │   ├── App.css
 │   │   └── main.jsx
+│   │
 │   ├── package.json
+│   ├── package-lock.json
 │   ├── vite.config.js
 │   └── index.html
 │
-├── backend/
-│   ├── app.py
-│   ├── database.py
-│   ├── validation.py
-│   ├── classification.py
-│   ├── routing.py
-│   ├── parking_tracker.db
-│   ├── requirements.txt
-│   └── tests/
-│       └── test_tracker.py
+├── screenshots/
+│   ├── overview.png
+│   ├── submit-violation.png
+│   ├── user-dashboard.png
+│   ├── handler-dashboard.png
+│   ├── routing-management.png
+│   └── analytics.png
 │
 ├── README.md
 ├── TESTING.md
@@ -99,129 +231,247 @@ Parking-Violation-Tracker/
 
 ---
 
-## 3. Technology Stack
-
-* **Frontend:** React 18, Vite 6, Bootstrap 5.3, Bootstrap Icons, React Router DOM 6, Chart.js 4, react-chartjs-2.
-* **Backend:** Python 3.13, Flask 3.1, Flask-CORS 5.0, SQLite3.
-* **Testing:** Pytest 8.3.4 (20 comprehensive automated test scenarios).
-
----
-
-## 4. Installation & Setup Instructions
+## ⚙️ 6. Installation and Setup
 
 ### Prerequisites
-* **Python 3.10+** (Python 3.13 verified)
-* **Node.js 18+** & **npm 9+** (Node v26.12 & npm 11.20 verified)
 
-### Step 1: Install Backend Dependencies
-Open PowerShell or Terminal and navigate to the project root:
+Install the following software:
+
+- Python 3.10 or higher.
+- Node.js 18 or higher.
+- npm.
+- Git.
+- Visual Studio Code (recommended).
+
+### Step 1: Clone the Repository
+
+Open PowerShell or the VS Code terminal.
 
 ```powershell
-cd c:\Users\nagar\OneDrive\Desktop\Parking-Violation-Tracker\backend
+git clone https://github.com/Nagaraj-Gouda/Parking-Violation-Tracker.git
+```
+
+Navigate to the project directory:
+
+```powershell
+cd Parking-Violation-Tracker
+```
+
+### Step 2: Set Up the Backend
+
+Navigate to the backend folder:
+
+```powershell
+cd backend
+```
+
+Create a Python virtual environment:
+
+```powershell
+python -m venv venv
+```
+
+Activate the virtual environment:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+Install backend dependencies:
+
+```powershell
 python -m pip install -r requirements.txt
 ```
 
-### Step 2: Install Frontend Dependencies
-Navigate to the frontend folder and install npm packages:
+### Step 3: Set Up the Frontend
+
+Open a second terminal at the project root directory.
+
+Navigate to the frontend folder:
 
 ```powershell
-cd c:\Users\nagar\OneDrive\Desktop\Parking-Violation-Tracker\frontend
+cd frontend
+```
+
+Install frontend dependencies:
+
+```powershell
 npm install
 ```
 
 ---
 
-## 5. Running the Application
+## ▶️ 7. Running the Application
 
-### Option A: Independent Dev Servers (Recommended for Development)
+The application uses two development servers.
 
-#### 1. Start the Flask Backend Server
-In the first terminal:
+### Terminal 1: Start the Flask Backend
+
+From the project root:
+
 ```powershell
-cd c:\Users\nagar\OneDrive\Desktop\Parking-Violation-Tracker\backend
+cd backend
+```
+
+Activate the virtual environment:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+Start the backend:
+
+```powershell
 python app.py
 ```
-* Backend starts at: **`http://127.0.0.1:5000`**
-* Health check: `http://127.0.0.1:5000/api/health`
 
-#### 2. Start the React Frontend Dev Server
-In a second terminal:
+**Backend URL:**
+
+```text
+http://127.0.0.1:5000
+```
+
+**Health Check:**
+
+```text
+http://127.0.0.1:5000/api/health
+```
+
+### Terminal 2: Start the React Frontend
+
+Open another terminal at the project root:
+
 ```powershell
-cd c:\Users\nagar\OneDrive\Desktop\Parking-Violation-Tracker\frontend
+cd frontend
+```
+
+Start the frontend:
+
+```powershell
 npm run dev
 ```
-* Frontend starts at: **`http://localhost:5173`**
-* Automatically proxies `/api/*` calls to Flask on port 5000.
+
+**Frontend URL:**
+
+```text
+http://localhost:5173
+```
+
+Open the frontend URL in your browser to access the application.
+
+**Note:** The Vite development server is configured to proxy API requests to the Flask backend.
 
 ---
 
-### Option B: Unified Single-Server Mode (Production / College Demonstration)
-The Flask backend has been configured to serve the production-built React application directly from `frontend/dist`:
+## 🧪 8. Running Automated Tests
 
-1. Build the frontend (already compiled):
-   ```powershell
-   cd c:\Users\nagar\OneDrive\Desktop\Parking-Violation-Tracker\frontend
-   npm run build
-   ```
-2. Start Flask:
-   ```powershell
-   cd c:\Users\nagar\OneDrive\Desktop\Parking-Violation-Tracker\backend
-   python app.py
-   ```
-3. Open your browser to: **`http://localhost:5000`**  
-   The entire full-stack application (frontend + backend + SQLite) will run unified on port 5000!
+The backend includes automated tests using Pytest.
 
----
-
-## 6. Running Automated Tests
-
-Run the 20 automated test cases with pytest:
+Run the following commands from the project root directory:
 
 ```powershell
-cd c:\Users\nagar\OneDrive\Desktop\Parking-Violation-Tracker
 $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = "1"
 python -m pytest backend/tests/test_tracker.py -v
 ```
 
-All 20 tests will execute and report passing statuses:
-```
-backend/tests/test_tracker.py::test_01_valid_vehicle_number PASSED
-backend/tests/test_tracker.py::test_02_invalid_vehicle_number PASSED
-backend/tests/test_tracker.py::test_03_valid_violation_code PASSED
-...
-backend/tests/test_tracker.py::test_20_frontend_backend_integration_health PASSED
-============================= 20 passed in 1.01s ==============================
+The project test suite is documented as containing 20 automated test scenarios.
+
+**Expected test summary:**
+
+```text
+20 passed
 ```
 
-Detailed test scenario descriptions and outputs are available in [`TESTING.md`](file:///c:/Users/nagar/OneDrive/Desktop/Parking-Violation-Tracker/TESTING.md).
+For detailed test descriptions, refer to:
+
+[TESTING.md](TESTING.md)
 
 ---
 
-## 7. REST API Reference
+## 🔗 9. REST API Reference
+
+The backend provides REST API endpoints for communication between the frontend and backend.
 
 | Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/health` | Backend status, service identifier, and version |
-| `GET` | `/api/categories` | Metadata for 5 predefined violation categories |
-| `POST` | `/api/validate/vehicle` | Live DFA transition trace and regex equivalence diagnostic |
-| `GET` | `/api/reports` | List reports with search, zone, status, priority, category filters |
-| `POST` | `/api/reports` | Submit violation report (runs DFA + Regex + Zone routing + SQLite insert) |
-| `GET` | `/api/reports/<id>` | Full incident details with assignment and status audit history |
-| `PUT` | `/api/reports/<id>/status` | Update incident status (triggers Waiting Queue re-evaluation on Resolve) |
-| `POST` | `/api/reports/<id>/reassign` | Manual operator reassignment / central correction dispatch |
-| `GET` | `/api/handlers` | Live handler list with capacities, on-duty status, and active counts |
-| `PUT` | `/api/handlers/<id>/availability` | Toggle handler on-duty / off-duty shift status |
-| `GET` | `/api/zones` | 6 enforcement zones with prefix mappings and incident counts |
-| `GET` | `/api/analytics` | Real-time SQLite statistics for Chart.js dashboards |
+|---|---|---|
+| GET | `/api/health` | Check backend health |
+| GET | `/api/categories` | Retrieve violation categories |
+| POST | `/api/validate/vehicle` | Validate vehicle registration |
+| GET | `/api/reports` | Retrieve violation reports |
+| POST | `/api/reports` | Submit a violation report |
+| GET | `/api/reports/<id>` | Retrieve incident details |
+| PUT | `/api/reports/<id>/status` | Update violation status |
+| POST | `/api/reports/<id>/reassign` | Reassign an incident |
+| GET | `/api/handlers` | Retrieve handler information |
+| PUT | `/api/handlers/<id>/availability` | Update handler availability |
+| GET | `/api/zones` | Retrieve enforcement zones |
+| GET | `/api/analytics` | Retrieve analytics data |
 
 ---
 
-## 8. Violation Classification Table
+## 🚨 10. Violation Classification
 
-| Code | Category Name | Fine (₹) | Default Priority | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| **PV01** | `No-Permit` | ₹500 | Medium | Parking in regulated bay without a valid permit or pass |
-| **PV02** | `Overstay` | ₹300 | Low | Exceeding maximum permitted metered parking duration |
-| **PV03** | `Wrong-Zone` | ₹750 | Medium | Vehicle parked outside its registered permit sector |
-| **PV04** | `Obstruction` | ₹1000 | High | Blocking access roads, fire hydrants, or driveways |
-| **PV05** | `Disabled-Bay` | ₹1500 | Emergency / Critical | Unauthorized parking in designated accessible bays |
+The application supports five predefined violation categories.
+
+| Code | Category | Fine | Default Priority |
+|---|---|---:|---|
+| PV01 | No-Permit | ₹500 | Medium |
+| PV02 | Overstay | ₹300 | Low |
+| PV03 | Wrong-Zone | ₹750 | Medium |
+| PV04 | Obstruction | ₹1,000 | High |
+| PV05 | Disabled-Bay | ₹1,500 | Emergency / Critical |
+
+---
+
+## 👥 11. Team Members
+
+This project was developed collaboratively by:
+
+1. **Nagaraja Manjunath Gouda**
+2. **Varun CT**
+3. **Veeresh RP**
+4. **Nataraj Sagar J**
+5. **Vishal Waghmare**
+
+---
+
+## 🎯 12. Learning Outcomes
+
+Through this project, we explored the practical application of:
+
+- Automata Theory through DFA and Regular Expressions.
+- Computer Networks through prefix-based routing and queue management.
+- Full Stack Development through React, Flask and SQLite.
+- REST API development and frontend-backend integration.
+- Database management and data persistence.
+- Software testing using Pytest.
+- Version control and GitHub.
+
+---
+
+## 🚀 13. Future Enhancements
+
+Possible future improvements include:
+
+- Online deployment of the application.
+- User authentication and role-based access.
+- Image upload for parking violation evidence.
+- Interactive geographical maps for enforcement zones.
+- Email or SMS notifications.
+- Advanced reporting and analytics.
+
+---
+
+## 📌 14. Project Repository
+
+**GitHub Repository:**
+
+[https://github.com/Nagaraj-Gouda/Parking-Violation-Tracker](https://github.com/Nagaraj-Gouda/Parking-Violation-Tracker)
+
+**Project Status:** Developed as an academic full-stack project. The application currently runs locally and has not yet been deployed as a live website.
+
+---
+
+⭐ If you find this project interesting, consider giving the repository a star!
+
+**Built with dedication as part of the Academic P14 Project.**
