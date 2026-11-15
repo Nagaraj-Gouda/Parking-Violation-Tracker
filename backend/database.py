@@ -9,8 +9,10 @@ import sqlite3
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict, Any
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "parking_tracker.db")
-
+DB_PATH = os.environ.get(
+    "DATABASE_PATH",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "parking_tracker.db")
+)
 
 def get_db_connection(db_path: Optional[str] = None) -> sqlite3.Connection:
     """Creates and returns a connection to the SQLite database with Row factory."""
